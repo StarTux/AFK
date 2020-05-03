@@ -1,0 +1,12 @@
+main: com.cavetale.afk.AFKPlugin
+
+name: AFK
+version: 0.1
+api-version: 1.13
+
+description: AFK Plugin
+author: StarTux
+website: https://cavetale.com
+
+depend: []
+softdepend: []
