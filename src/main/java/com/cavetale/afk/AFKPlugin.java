@@ -1,6 +1,9 @@
 package com.cavetale.afk;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class AFKPlugin extends JavaPlugin implements Listener {
+public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
     int idleThreshold = 20 * 60;
 
     @Override
@@ -27,6 +30,19 @@ public final class AFKPlugin extends JavaPlugin implements Listener {
         for (Player player : getServer().getOnlinePlayers()) {
             exit(player);
         }
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command,
+                             String alias, String[] args) {
+        if (args.length != 0) return false;
+        Player player = sender instanceof Player ? (Player) sender : null;
+        if (player == null) return false;
+        Session session = sessionOf(player);
+        if (session.afk) return true;
+        session.afk = true;
+        setAfk(player, true);
+        return true;
     }
 
     void setAfk(Player player, boolean afk) {

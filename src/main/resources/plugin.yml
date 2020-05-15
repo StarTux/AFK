@@ -10,3 +10,15 @@ website: https://cavetale.com
 
 depend: []
 softdepend: []
+
+permissions:
+  afk:
+    aliases: []
+    description: Enter afk state
+    usage: /afk
+    permission: afk.afk
+
+permissions:
+  afk.afk:
+    description: Use /afk
+    default: op
