@@ -11,7 +11,7 @@ website: https://cavetale.com
 depend: []
 softdepend: []
 
-permissions:
+commands:
   afk:
     aliases: []
     description: Enter afk state
