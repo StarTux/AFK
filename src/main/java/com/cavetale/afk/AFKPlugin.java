@@ -47,7 +47,8 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
 
     void setAfk(Player player, boolean afk) {
         player.setPlayerListName(afk
-                                 ? ChatColor.GRAY + "[afk] " + player.getName()
+                                 ? (ChatColor.GRAY + player.getName()
+                                    + ChatColor.DARK_GRAY + "(afk)")
                                  : null);
         player.setAffectsSpawning(!afk);
         player.setSleepingIgnored(afk);
