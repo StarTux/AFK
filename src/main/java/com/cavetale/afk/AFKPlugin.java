@@ -14,7 +14,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
-    int idleThreshold = 20 * 60;
+    int idleThreshold = 20 * 60 * 2;
 
     @Override
     public void onEnable() {
