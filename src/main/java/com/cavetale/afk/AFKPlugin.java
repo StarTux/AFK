@@ -1,5 +1,6 @@
 package com.cavetale.afk;
 
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,10 +15,12 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
+    @Getter private static AFKPlugin instance;
     int idleThreshold = 20 * 60 * 2;
 
     @Override
     public void onEnable() {
+        instance = this;
         for (Player player : getServer().getOnlinePlayers()) {
             enter(player);
         }
@@ -108,5 +111,9 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
         enter(event.getPlayer());
+    }
+
+    public static boolean isAfk(Player player) {
+        return instance.sessionOf(player).afk;
     }
 }
