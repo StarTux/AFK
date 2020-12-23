@@ -7,9 +7,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -111,6 +113,11 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
         enter(event.getPlayer());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    void onPlayerTeleport(PlayerTeleportEvent event) {
+        sessionOf(event.getPlayer()).setLocation(event.getTo());
     }
 
     public static boolean isAfk(Player player) {

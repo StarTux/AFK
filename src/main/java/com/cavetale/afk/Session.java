@@ -17,13 +17,21 @@ final class Session {
     int idleTicks;
     boolean afk;
 
+    void setLocation(Location loc) {
+        lx = loc.getBlockX();
+        ly = loc.getBlockY();
+        lz = loc.getBlockZ();
+        lpitch = loc.getPitch();
+        lyaw = loc.getYaw();
+    }
+
     void update(Player player) {
-        Location eye = player.getEyeLocation();
-        final int x = eye.getBlockX();
-        final int y = eye.getBlockY();
-        final int z = eye.getBlockZ();
-        final float pitch = eye.getPitch();
-        final float yaw = eye.getYaw();
+        Location loc = player.getLocation();
+        final int x = loc.getBlockX();
+        final int y = loc.getBlockY();
+        final int z = loc.getBlockZ();
+        final float pitch = loc.getPitch();
+        final float yaw = loc.getYaw();
         if (x == lx && y == ly && z == lz) {
             noMove += 1;
         } else {
