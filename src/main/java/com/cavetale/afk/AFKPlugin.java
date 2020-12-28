@@ -1,6 +1,7 @@
 package com.cavetale.afk;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,20 +20,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
     @Getter private static AFKPlugin instance;
     int idleThreshold = 20 * 60 * 2;
+    int kickThreshold = 20 * 60 * 10;
 
     @Override
     public void onEnable() {
         instance = this;
-        for (Player player : getServer().getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             enter(player);
         }
-        getServer().getPluginManager().registerEvents(this, this);
-        getServer().getScheduler().runTaskTimer(this, this::timer, 1, 1);
+        Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getScheduler().runTaskTimer(this, this::timer, 1, 1);
     }
 
     @Override
     public void onDisable() {
-        for (Player player : getServer().getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             exit(player);
         }
     }
@@ -88,7 +90,8 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     }
 
     void timer() {
-        for (Player player : getServer().getOnlinePlayers()) {
+        double tps = Bukkit.getTPS()[0];
+        for (Player player : Bukkit.getOnlinePlayers()) {
             Session session = sessionOf(player);
             session.update(player);
             if (session.afk) {
@@ -101,6 +104,11 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
                     setAfk(player, true);
                     session.afk = true;
                 }
+            }
+            if (tps < 17.0 && session.idleTicks >= kickThreshold && !player.hasPermission("afk.nokick")) {
+                getLogger().info("Kicking player: " + player.getName());
+                clearSession(player);
+                player.kickPlayer("AFK: Away from keyboard");
             }
         }
     }

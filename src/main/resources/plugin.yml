@@ -22,3 +22,7 @@ permissions:
   afk.afk:
     description: Use /afk
     default: op
+
+  afk.nokick:
+    description: Never get kicked
+    default: op
