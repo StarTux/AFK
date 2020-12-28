@@ -15,7 +15,10 @@ commands:
   afk:
     aliases: []
     description: Enter afk state
-    usage: /afk
+    usage: |-
+      /afk - Toggle afk
+      /afk info <player> - Get info on player
+      /afk list - List afk players
     permission: afk.afk
 
 permissions:

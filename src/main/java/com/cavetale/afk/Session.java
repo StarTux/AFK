@@ -1,10 +1,11 @@
 package com.cavetale.afk;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Getter
 final class Session {
     public static final String KEY = "afk:session";
     int lx;
