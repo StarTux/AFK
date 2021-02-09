@@ -22,8 +22,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
     @Getter private static AFKPlugin instance;
-    int idleThreshold = 20 * 60 * 2;
-    int kickThreshold = 20 * 60 * 5;
+    private int idleThreshold = 20 * 60 * 2;
+    private int kickThreshold = 20 * 60 * 5;
+    private boolean kickEnabled;
+    private List<String> noKickWorlds;
 
     @Override
     public void onEnable() {
@@ -31,6 +33,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
         for (Player player : Bukkit.getOnlinePlayers()) {
             enter(player);
         }
+        loadConf();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getScheduler().runTaskTimer(this, this::timer, 1, 1);
     }
@@ -139,7 +142,8 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
                     session.afk = true;
                 }
             }
-            if (tps < 17.0 && session.idleTicks >= kickThreshold && !player.hasPermission("afk.nokick")) {
+            if (kickEnabled && tps < 17.0 && session.idleTicks >= kickThreshold
+                && !noKickWorlds.contains(player.getWorld().getName()) && !player.hasPermission("afk.nokick")) {
                 getLogger().info("Kicking player: " + player.getName());
                 player.kickPlayer("AFK: Away from keyboard");
                 clearSession(player);
@@ -164,5 +168,12 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
 
     public static boolean isAfk(Player player) {
         return instance.sessionOf(player).afk;
+    }
+
+    public void loadConf() {
+        saveDefaultConfig();
+        reloadConfig();
+        kickEnabled = getConfig().getBoolean("Kick.Enabled");
+        noKickWorlds = getConfig().getStringList("Kick.NoKickWorlds");
     }
 }
