@@ -8,7 +8,7 @@ description: Player AFK detection
 author: StarTux
 website: https://cavetale.com
 
-depend: []
+depend: [Title]
 softdepend: []
 
 commands:

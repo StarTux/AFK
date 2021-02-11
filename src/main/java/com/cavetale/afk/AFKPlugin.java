@@ -1,5 +1,6 @@
 package com.cavetale.afk;
 
+import com.winthier.title.TitlePlugin;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -90,10 +91,11 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     }
 
     void setAfk(Player player, boolean afk) {
-        player.setPlayerListName(afk
-                                 ? (ChatColor.GRAY + player.getName()
-                                    + ChatColor.DARK_GRAY + "(afk)")
-                                 : null);
+        if (afk) {
+            TitlePlugin.getInstance().setPlayerListSuffix(player, ChatColor.GRAY + "(afk)");
+        } else {
+            TitlePlugin.getInstance().setPlayerListSuffix(player, null);
+        }
         player.setAffectsSpawning(!afk);
         player.setSleepingIgnored(afk);
     }
