@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -92,9 +93,9 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
 
     void setAfk(Player player, boolean afk) {
         if (afk) {
-            TitlePlugin.getInstance().setPlayerListSuffix(player, ChatColor.GRAY + "(afk)");
+            TitlePlugin.getInstance().setPlayerListSuffix(player, Component.text("(afk)", NamedTextColor.GRAY));
         } else {
-            TitlePlugin.getInstance().setPlayerListSuffix(player, null);
+            TitlePlugin.getInstance().setPlayerListSuffix(player, (Component) null);
         }
         player.setAffectsSpawning(!afk);
         player.setSleepingIgnored(afk);
