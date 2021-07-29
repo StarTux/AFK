@@ -148,7 +148,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
             if (kickEnabled && tps < 17.0 && session.idleTicks >= kickThreshold
                 && !noKickWorlds.contains(player.getWorld().getName()) && !player.hasPermission("afk.nokick")) {
                 getLogger().info("Kicking player: " + player.getName());
-                player.kickPlayer("AFK: Away from keyboard");
+                player.kick(Component.text("AFK: Away from keyboard", NamedTextColor.YELLOW));
                 clearSession(player);
             }
         }
