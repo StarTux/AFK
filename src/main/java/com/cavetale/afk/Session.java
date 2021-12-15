@@ -55,6 +55,7 @@ final class Session {
         if (eq(lpitch, pitch, 1.0)) { // [-90,90]
             noPitch += 1;
         } else {
+            noPitch = 0;
             lpitch = pitch;
         }
         if (eq(lyaw, yaw, 1.0)) { // [0,360]

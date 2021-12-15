@@ -30,10 +30,10 @@ final class AdminCommand extends AbstractCommand<AFKPlugin> {
     }
 
     protected boolean info(CommandSender sender, String[] args) {
-        if (args.length != 2) return false;
-        Player target = Bukkit.getPlayer(args[1]);
+        if (args.length != 1) return false;
+        Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage("Player not found: " + args[1]);
+            sender.sendMessage("Player not found: " + args[0]);
             return true;
         }
         Session session = plugin.sessionOf(target);
