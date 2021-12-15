@@ -8,22 +8,31 @@ description: Player AFK detection
 author: StarTux
 website: https://cavetale.com
 
-depend: [Title]
+depend: [Core, Title]
 softdepend: []
 
 commands:
+
   afk:
     aliases: []
     description: Enter afk state
-    usage: |-
-      /afk - Toggle afk
-      /afk info <player> - Get info on player
-      /afk list - List afk players
+    usage: /afk - Toggle afk
     permission: afk.afk
 
+  afkadmin:
+    aliases: []
+    description: Admin command
+    usage: /afkadmin
+    permission: afk.admin
+
 permissions:
+
   afk.afk:
     description: Use /afk
+    default: op
+
+  afk.admin:
+    description: Use /afkadmin
     default: op
 
   afk.nokick:
