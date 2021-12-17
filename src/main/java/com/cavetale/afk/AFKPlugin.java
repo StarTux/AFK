@@ -27,8 +27,8 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     private AdminCommand adminCommand = new AdminCommand(this);
     private final Map<UUID, Session> sessionsMap = new HashMap<>();
     private final long deleteSessionsAfter = Duration.ofMinutes(5).toMillis();
-    private int idleThreshold = 20 * 60 * 2;
-    private int kickThreshold = 20 * 60 * 5;
+    private int idleThreshold = 20 * 60 * 5;
+    private int kickThreshold = 20 * 60 * 10;
     private boolean kickEnabled;
     private List<String> noKickWorlds;
 
