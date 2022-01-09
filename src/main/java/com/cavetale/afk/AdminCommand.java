@@ -47,7 +47,7 @@ final class AdminCommand extends AbstractCommand<AFKPlugin> {
     }
 
     protected boolean list(CommandSender sender, String[] args) {
-        if (args.length != 1) return false;
+        if (args.length != 0) return false;
         List<String> list = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (plugin.sessionOf(player).afk) {
