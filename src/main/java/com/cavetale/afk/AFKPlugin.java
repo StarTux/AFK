@@ -110,6 +110,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
                 && !noKickWorlds.contains(player.getWorld().getName()) && !player.hasPermission("afk.nokick")) {
                 getLogger().info("Kicking player: " + player.getName());
                 player.kick(Component.text("AFK: Away from keyboard", NamedTextColor.YELLOW));
+                sessionsMap.remove(player.getUniqueId());
             }
         }
         long then = now - deleteSessionsAfter;
@@ -121,6 +122,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
         Player player = event.getPlayer();
         sessionOf(player).afk = false;
         applyAfkEffects(player, false);
+        sessionsMap.remove(player.getUniqueId());
     }
 
     @EventHandler
