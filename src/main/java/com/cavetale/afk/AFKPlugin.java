@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,8 +20,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import static com.cavetale.core.font.Unicode.tiny;
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public final class AFKPlugin extends JavaPlugin implements CommandExecutor, Listener {
+    private static final Component AFK_SUFFIX = text(tiny("afk"), GRAY);
     @Getter private static AFKPlugin instance;
     private AdminCommand adminCommand = new AdminCommand(this);
     private final Map<UUID, Session> sessionsMap = new HashMap<>();
@@ -68,7 +71,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
 
     protected void applyAfkEffects(Player player, boolean afk) {
         if (afk) {
-            TitlePlugin.getInstance().setPlayerListSuffix(player, Component.text("(afk)", NamedTextColor.GRAY));
+            TitlePlugin.getInstance().setPlayerListSuffix(player, AFK_SUFFIX);
         } else {
             TitlePlugin.getInstance().setPlayerListSuffix(player, (Component) null);
         }
@@ -100,7 +103,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
             }
             if (kickEnabled && tps < 17.0 && session.idleTicks >= kickThreshold && !player.hasPermission("afk.nokick")) {
                 getLogger().info("Kicking player: " + player.getName());
-                player.kick(Component.text("AFK: Away from keyboard", NamedTextColor.YELLOW));
+                player.kick(text("AFK: Away from keyboard", YELLOW));
                 sessionsMap.remove(player.getUniqueId());
             }
         }
