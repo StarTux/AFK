@@ -1,9 +1,9 @@
 package com.cavetale.afk;
 
+import com.cavetale.core.connect.NetworkServer;
 import com.winthier.title.TitlePlugin;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.Getter;
@@ -30,7 +30,6 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     private int idleThreshold = 20 * 60 * 5;
     private int kickThreshold = 20 * 60 * 10;
     private boolean kickEnabled;
-    private List<String> noKickWorlds;
 
     @Override
     public void onEnable() {
@@ -38,7 +37,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
         for (Player player : Bukkit.getOnlinePlayers()) {
             applyAfkEffects(player, false);
         }
-        loadConf();
+        kickEnabled = NetworkServer.current().isHome();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getScheduler().runTaskTimer(this, this::tick, 1, 1);
         adminCommand.enable();
@@ -50,13 +49,6 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
             applyAfkEffects(player, false);
         }
         sessionsMap.clear();
-    }
-
-    private void loadConf() {
-        saveDefaultConfig();
-        reloadConfig();
-        kickEnabled = getConfig().getBoolean("Kick.Enabled");
-        noKickWorlds = getConfig().getStringList("Kick.NoKickWorlds");
     }
 
     @Override
@@ -106,8 +98,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
                     session.afk = true;
                 }
             }
-            if (kickEnabled && tps < 17.0 && session.idleTicks >= kickThreshold
-                && !noKickWorlds.contains(player.getWorld().getName()) && !player.hasPermission("afk.nokick")) {
+            if (kickEnabled && tps < 17.0 && session.idleTicks >= kickThreshold && !player.hasPermission("afk.nokick")) {
                 getLogger().info("Kicking player: " + player.getName());
                 player.kick(Component.text("AFK: Away from keyboard", NamedTextColor.YELLOW));
                 sessionsMap.remove(player.getUniqueId());
