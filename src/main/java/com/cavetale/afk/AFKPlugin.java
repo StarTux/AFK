@@ -75,7 +75,11 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
         } else {
             TitlePlugin.getInstance().setPlayerListSuffix(player, (Component) null);
         }
-        player.setAffectsSpawning(!afk);
+        if (Bukkit.getTPS()[0] < 19.0) {
+            player.setAffectsSpawning(!afk);
+        } else {
+            player.setAffectsSpawning(true);
+        }
         player.setSleepingIgnored(afk);
     }
 
