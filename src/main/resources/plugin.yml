@@ -2,7 +2,7 @@ main: com.cavetale.afk.AFKPlugin
 name: AFK
 
 version: 0.1
-api-version: 1.19
+api-version: '1.20'
 
 description: Player AFK detection
 author: StarTux
