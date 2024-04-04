@@ -2,6 +2,7 @@ package com.cavetale.afk;
 
 import com.cavetale.core.bungee.Bungee;
 import com.cavetale.core.connect.NetworkServer;
+import com.winthier.chat.event.ChatPlayerTalkEvent;
 import com.winthier.title.TitlePlugin;
 import java.net.SocketException;
 import java.time.Duration;
@@ -153,6 +154,13 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     protected void onPlayerTeleport(PlayerTeleportEvent event) {
         sessionOf(event.getPlayer()).setLocation(event.getTo());
+    }
+
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
+    private void onChatPlayerTalk(ChatPlayerTalkEvent event) {
+        final Player player = event.getPlayer();
+        sessionOf(player).afk = false;
+        applyAfkEffects(player, false);
     }
 
     public static boolean isAfk(Player player) {
