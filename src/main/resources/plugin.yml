@@ -41,4 +41,4 @@ permissions:
 
   afk.longkick:
     description: Kick after long time
-    default: op
+    default: false
