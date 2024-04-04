@@ -1,11 +1,14 @@
 package com.cavetale.afk;
 
+import com.cavetale.core.bungee.Bungee;
 import com.cavetale.core.connect.NetworkServer;
 import com.winthier.title.TitlePlugin;
+import java.net.SocketException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -32,6 +35,14 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
     private final long deleteSessionsAfter = Duration.ofMinutes(5).toMillis();
     private int idleThreshold = 20 * 60 * 5;
     private int kickThreshold = 20 * 60 * 10;
+    private int[] longKickThresholds = {
+        20 * 60 * 60 * 3,
+        20 * 60 * 60 * 4,
+        20 * 60 * 60 * 5,
+        20 * 60 * 60 * 6,
+        20 * 60 * 60 * 7,
+        20 * 60 * 60 * 8,
+    };
     private boolean kickEnabled;
 
     @Override
@@ -109,6 +120,15 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
                 getLogger().info("Kicking player: " + player.getName());
                 player.kick(text("AFK: Away from keyboard", YELLOW));
                 sessionsMap.remove(player.getUniqueId());
+            }
+            if (session.idleTicks >= longKickThresholds[0] && player.hasPermission("afk.longkick")) {
+                for (int longKickThreshold : longKickThresholds) {
+                    if (session.idleTicks == longKickThreshold && ThreadLocalRandom.current().nextInt(longKickThresholds.length) == 0) {
+                        getLogger().info("Long kick: " + player.getName());
+                        Bungee.kick(player, "Internal Exception: " + SocketException.class.getName() + ": Connection reset");
+                        break;
+                    }
+                }
             }
         }
         long then = now - deleteSessionsAfter;

@@ -38,3 +38,7 @@ permissions:
   afk.nokick:
     description: Never get kicked
     default: op
+
+  afk.longkick:
+    description: Kick after long time
+    default: op

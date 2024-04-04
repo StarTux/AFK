@@ -9,6 +9,9 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.Component.textOfChildren;
+import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 final class AdminCommand extends AbstractCommand<AFKPlugin> {
     protected AdminCommand(final AFKPlugin plugin) {
@@ -37,12 +40,14 @@ final class AdminCommand extends AbstractCommand<AFKPlugin> {
             return true;
         }
         Session session = plugin.sessionOf(target);
-        sender.sendMessage(target.getName() + ":"
-                           + " noMove=" + session.getNoMove()
-                           + " noPitch=" + session.getNoPitch()
-                           + " noYaw=" + session.getNoYaw()
-                           + " idle=" + session.idleTicks
-                           + " afk=" + session.afk);
+        sender.sendMessage(textOfChildren(text(target.getName() + ":", AQUA),
+                                          text(" noMove:", GRAY), text(session.getNoMove(), WHITE),
+                                          text(" noPitch:", GRAY), text(session.getNoPitch(), WHITE),
+                                          text(" noYaw:", GRAY), text(session.getNoYaw(), WHITE),
+                                          text(" idle:", GRAY), text(session.idleTicks, WHITE),
+                                          text(" afk:", GRAY), text(session.afk, WHITE),
+                                          text(" spawning:", GRAY), text(target.getAffectsSpawning(), WHITE),
+                                          text(" sleepingIgnored:", GRAY), text(target.isSleepingIgnored(), WHITE)));
         return true;
     }
 
