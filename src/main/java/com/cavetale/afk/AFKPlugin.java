@@ -125,7 +125,7 @@ public final class AFKPlugin extends JavaPlugin implements CommandExecutor, List
             if (session.idleTicks >= longKickThresholds[0] && player.hasPermission("afk.longkick")) {
                 for (int longKickThreshold : longKickThresholds) {
                     if (session.idleTicks != longKickThreshold) continue;
-                    final int max = longKickThresholds.length;
+                    final int max = longKickThresholds.length * 2;
                     final int roll = ThreadLocalRandom.current().nextInt(max);
                     final boolean success = roll == 0;
                     getLogger().info("Long kick: " + player.getName()
